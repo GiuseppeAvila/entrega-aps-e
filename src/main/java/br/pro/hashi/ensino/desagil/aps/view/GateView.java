@@ -18,9 +18,11 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
 
     private final JCheckBox gateInputField1;
     private final JCheckBox gateInputField2;
+    private final JCheckBox gateInputField3;
 
     private final Switch input1;
     private final Switch input2;
+    private final Switch input3;
 
     private final Image image;
     private final Light light;
@@ -35,16 +37,23 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
 
         gateInputField1 = new JCheckBox();
         gateInputField2 = new JCheckBox();
+        gateInputField3 = new JCheckBox();
 
         input1 = new Switch();
         input2 = new Switch();
+        input3 = new Switch();
 
         if (this.gate.getInputSize() == 1) {
             add(gateInputField1, 20, 55, 20, 20);
+        } else if (this.gate.getInputSize() == 3) {
+            add(gateInputField1, 20, 20, 20, 20);
+            add(gateInputField2, 20, 55, 20, 20);
+            add(gateInputField3, 20, 90, 20, 20);
         } else {
             add(gateInputField1, 20, 30, 20, 20);
             add(gateInputField2, 20, 80, 20, 20);
         }
+
 
         this.gate.connect(0, input1);
         light.connect(0, gate);
@@ -55,6 +64,7 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
 
         gateInputField1.addActionListener(this);
         gateInputField2.addActionListener(this);
+        gateInputField3.addActionListener(this);
 
         addMouseListener(this);
         update();
@@ -70,6 +80,15 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
                 input2.turnOff();
             }
             gate.connect(1, input2);
+        }
+
+        if (gate.getInputSize() == 3) {
+            if (gateInputField3.isSelected()) {
+                input3.turnOn();
+            } else {
+                input3.turnOff();
+            }
+            gate.connect(2, input3);
         }
 
         if (gateInputField1.isSelected()) {
